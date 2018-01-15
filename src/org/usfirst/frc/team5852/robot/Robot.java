@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5852.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -7,6 +8,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.lang.String;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -35,6 +37,8 @@ public class Robot extends IterativeRobot {
 	//Joystick
 	
 	Joystick joy =new Joystick(0); 
+	
+	String gameData;
 	
 	
 	/**
@@ -66,7 +70,10 @@ public class Robot extends IterativeRobot {
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
-	}
+		
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		
+				}
 
 	/**
 	 * This function is called periodically during autonomous
@@ -75,7 +82,46 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		switch (autoSelected) {
 		case customAuto:
-			// Put custom auto code here
+			while (isAutonomous() && isEnabled()) {
+				if(gameData.charAt(0) == 'L')
+				{
+					for (int i = 0; i < 100000; i++) {
+						rDrive.tankDrive(0.5,0.5);
+					}
+					for (int i = 0; i < 20000; i++) {
+						rDrive.tankDrive(0, 0.5);
+					}
+					for (int i = 0; i < 20000; i++) {
+						rDrive.tankDrive(0.5, 0.5);
+					}
+					for (int i = 0; i < 20000; i++) {
+						rDrive.tankDrive(0.5, 0);
+					}
+					for (int i = 0; i < 100000; i++) {
+						rDrive.tankDrive(0.5, 0.5);
+					}
+					Timer.delay(13);
+					//left
+				} else {
+					for (int i = 0; i < 100000; i++) {
+						rDrive.tankDrive(0.5, 0.5);
+					}
+					for (int i = 0; i < 20000; i++) {
+						rDrive.tankDrive(0.5, 0);
+					}
+					for (int i = 0; i < 20000; i++) {
+						rDrive.tankDrive(0.5, 0.5);
+					}
+					for (int i = 0; i < 20000; i++) {
+						rDrive.tankDrive(0, 0.5);
+					}
+					for (int i = 0; i < 100000; i++) {
+						rDrive.tankDrive(0.5, 0.5);
+					}
+					Timer.delay(13);
+					//right
+				}
+			}
 			break;
 		case defaultAuto:
 		default:
@@ -83,7 +129,7 @@ public class Robot extends IterativeRobot {
 				
 				for (int i = 0; i < 220000; i++) { 
 					
-					rDrive.tankDrive(0.5, 0.5)
+					rDrive.tankDrive(0.5, 0.5);
 				}
 			
 			Timer.delay(13);
@@ -91,6 +137,7 @@ public class Robot extends IterativeRobot {
 			}
 			break;
 		}
+		
 	}
 
 	/**
