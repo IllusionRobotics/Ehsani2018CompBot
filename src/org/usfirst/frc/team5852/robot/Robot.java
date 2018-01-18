@@ -4,9 +4,10 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.lang.String;
@@ -27,13 +28,16 @@ public class Robot extends IterativeRobot {
 	//MotorSpeedControllers
 	
 	Talon backRightMotor = new Talon(3);
-	Talon backLeftMotor = new Talon(2);
 	Talon frontRightMotor = new Talon(1);
+	SpeedControllerGroup m_right = new SpeedControllerGroup(frontRightMotor, backRightMotor);
+	
+	Talon backLeftMotor = new Talon(2);
 	Talon frontLeftMotor = new Talon(0);
+	SpeedControllerGroup m_left = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
 	
 	//DriveTrain
 	
-	RobotDrive rDrive = new RobotDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
+	DifferentialDrive rDrive = new DifferentialDrive(m_left, m_right);
 
 	//Joystick
 	
