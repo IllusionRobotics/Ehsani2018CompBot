@@ -26,10 +26,10 @@ public class Robot extends IterativeRobot {
 	
 	//MotorSpeedControllers
 	
-	Talon backRightMotor = new Talon(0);
-	Talon backLeftMotor = new Talon(1);
-	Talon frontRightMotor = new Talon(2);
-	Talon frontLeftMotor = new Talon(3);
+	Talon backRightMotor = new Talon(3);
+	Talon backLeftMotor = new Talon(2);
+	Talon frontRightMotor = new Talon(1);
+	Talon frontLeftMotor = new Talon(0);
 	
 	//DriveTrain
 	
