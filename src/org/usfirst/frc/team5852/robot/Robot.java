@@ -84,6 +84,7 @@ public class Robot extends IterativeRobot {
 				}
 
 	/**
+
 	 * This function is called periodically during autonomous
 	 */
 	@Override
@@ -96,15 +97,19 @@ public class Robot extends IterativeRobot {
 					for (int i = 0; i < 100000; i++) {
 						rDrive.tankDrive(0.5,0.5);
 					}
+					Timer.delay(1);
 					for (int i = 0; i < 20000; i++) {
-						rDrive.tankDrive(0, 0.5);
+						rDrive.tankDrive(-0.5, 0.5);
 					}
+					Timer.delay(1);
 					for (int i = 0; i < 20000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
+					Timer.delay(1);
 					for (int i = 0; i < 20000; i++) {
-						rDrive.tankDrive(0.5, 0);
+						rDrive.tankDrive(0.5, -0.5);
 					}
+					Timer.delay(1);
 					for (int i = 0; i < 100000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
@@ -114,15 +119,19 @@ public class Robot extends IterativeRobot {
 					for (int i = 0; i < 100000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
+					Timer.delay(1);
 					for (int i = 0; i < 20000; i++) {
-						rDrive.tankDrive(0.5, 0);
+						rDrive.tankDrive(0.5, -0.5);
 					}
+					Timer.delay(1);
 					for (int i = 0; i < 20000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
+					Timer.delay(1);
 					for (int i = 0; i < 20000; i++) {
-						rDrive.tankDrive(0, 0.5);
+						rDrive.tankDrive(-0.5, 0.5);
 					}
+					Timer.delay(1);
 					for (int i = 0; i < 100000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
