@@ -20,43 +20,45 @@ import java.lang.String;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	final String defaultAuto = "Default";
-	final String customAuto = "My Auto";
+	final String noAuto = "No Auto";
+	final String switchAuto = "Switch Auto";
+	final String baselineAuto = "Baseline Auto";
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
-	
+
 	//MotorSpeedControllers
-	
+
 	Talon backRightMotor = new Talon(3);
 	Talon frontRightMotor = new Talon(1);
 	SpeedControllerGroup m_right = new SpeedControllerGroup(frontRightMotor, backRightMotor);
-	
+
 	Talon backLeftMotor = new Talon(2);
 	Talon frontLeftMotor = new Talon(0);
 	SpeedControllerGroup m_left = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
-	
+
 	//DriveTrain
-	
+
 	DifferentialDrive rDrive = new DifferentialDrive(m_left, m_right);
 
 	//Joystick
-	
+
 	Joystick joy =new Joystick(0); 
-	
+
 	String gameData;
-	
-	
+
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
-		
-		chooser.addDefault("Default Auto", defaultAuto);
-		chooser.addObject("My Auto", customAuto);
+
+		chooser.addDefault("No Auto", noAuto);
+		chooser.addObject("Switch Auto", switchAuto);
+		chooser.addObject("Baseline Auto", baselineAuto);
 		SmartDashboard.putData("Auto choices", chooser);
-		
+
 		//start camera capture
 		CameraServer.getInstance().startAutomaticCapture();
 	}
@@ -78,10 +80,10 @@ public class Robot extends IterativeRobot {
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
-		
+
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		
-				}
+
+	}
 
 	/**
 
@@ -90,96 +92,98 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		switch (autoSelected) {
-		case customAuto:
+		case switchAuto:
 			while (isAutonomous() && isEnabled()) {
 				if(gameData.charAt(0) == 'L')
 				{
-					for (int i = 0; i < 100000; i++) {
+					for (int i = 0; i < 20000; i++) {
 						rDrive.tankDrive(0.5,0.5);
 					}
 					Timer.delay(1);
 					for (int i = 0; i < 20000; i++) {
 						rDrive.tankDrive(-0.5, 0.5);
 					}
-					Timer.delay(1);
-					for (int i = 0; i < 20000; i++) {
+					for (int i = 0; i < 40000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
 					Timer.delay(1);
-					for (int i = 0; i < 20000; i++) {
+					for (int i = 0; i < 16500; i++) {
 						rDrive.tankDrive(0.5, -0.5);
 					}
-					Timer.delay(1);
-					for (int i = 0; i < 100000; i++) {
+					for (int i = 0; i < 55000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
-					Timer.delay(13);
+					Timer.delay(10);
 					//left
 				} else {
-					for (int i = 0; i < 100000; i++) {
+					for (int i = 0; i < 20000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
 					Timer.delay(1);
 					for (int i = 0; i < 20000; i++) {
 						rDrive.tankDrive(0.5, -0.5);
 					}
-					Timer.delay(1);
-					for (int i = 0; i < 20000; i++) {
+					for (int i = 0; i < 40000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
 					Timer.delay(1);
-					for (int i = 0; i < 20000; i++) {
+					for (int i = 0; i < 16500; i++) {
 						rDrive.tankDrive(-0.5, 0.5);
 					}
-					Timer.delay(1);
-					for (int i = 0; i < 100000; i++) {
+					for (int i = 0; i < 55000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
-					Timer.delay(13);
+					Timer.delay(10);
 					//right
 				}
 			}
 			break;
-		case defaultAuto:
-		default:
+		case baselineAuto:
 			while (isAutonomous() && isEnabled()) {
-				
-				for (int i = 0; i < 220000; i++) { 
-					
+
+				for (int i = 0; i < 90000; i++) { 
+
 					rDrive.tankDrive(0.5, 0.5);
 				}
-			
-			Timer.delay(13);
-				
+
+				Timer.delay(13);
+
 			}
 			break;
+			
+	case noAuto:
+	default:
+		while (isAutonomous() && isEnabled()) {
+
+			break;
 		}
-		
 	}
 
-	/**
-	 * This function is called periodically during operator control
-	 */
-	@Override
-	public void teleopPeriodic() {
-		
-		// Will run during teleop and enabled
-		
-		while(isOperatorControl() && isEnabled()) {
-			
-			// Uses input from the joystick
-			
-			rDrive.arcadeDrive(joy.getY(), joy.getX()); 
-			
-		}
-		
+}
+
+/**
+ * This function is called periodically during operator control
+ */
+@Override
+public void teleopPeriodic() {
+
+	// Will run during teleop and enabled
+
+	while(isOperatorControl() && isEnabled()) {
+
+		// Uses input from the joystick
+
+		rDrive.arcadeDrive(joy.getY(), joy.getX()); 
+
 	}
 
-	/**
-	 * This function is called periodically during test mode
-	 */
-	@Override
-	public void testPeriodic() {
-	}
+}
+
+/**
+ * This function is called periodically during test mode
+ */
+@Override
+public void testPeriodic() {
+}
 }
 
