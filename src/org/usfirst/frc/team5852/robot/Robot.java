@@ -1,6 +1,8 @@
 package org.usfirst.frc.team5852.robot;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -25,6 +27,8 @@ public class Robot extends IterativeRobot {
 	final String baselineAuto = "Baseline Auto";
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
+	
+	String gameData;
 
 	//MotorSpeedControllers
 
@@ -44,7 +48,13 @@ public class Robot extends IterativeRobot {
 
 	Joystick joy =new Joystick(0); 
 
-	String gameData;
+	//Buttons Joystick
+	
+	//Intake and Compressor
+	Talon intake =new Talon(4);
+	Compressor c = new Compressor(0);
+	//Solenoid block grabber
+	DoubleSolenoid solegrab =new DoubleSolenoid(1, 2);
 
 
 	/**
@@ -93,43 +103,56 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		switch (autoSelected) {
 		case switchAuto:
-			while (isAutonomous() && isEnabled()) {
+			while (isAutonomous() && isEnabled()) 
+			{
 				if(gameData.charAt(0) == 'L')
 				{
+					//goes to left side of switch
+					//goes forward
 					for (int i = 0; i < 20000; i++) {
 						rDrive.tankDrive(0.5,0.5);
 					}
 					Timer.delay(1);
+					//turns left
 					for (int i = 0; i < 20000; i++) {
 						rDrive.tankDrive(-0.5, 0.5);
 					}
+					//goes left
 					for (int i = 0; i < 40000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
 					Timer.delay(1);
+					//turns right
 					for (int i = 0; i < 16500; i++) {
 						rDrive.tankDrive(0.5, -0.5);
 					}
+					//continues forward until reaches switch
 					for (int i = 0; i < 55000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
 					Timer.delay(10);
-					//left
-				} else {
+				} else 
+				{
+					//goes to right side of switch
+					//goes forward
 					for (int i = 0; i < 20000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
 					Timer.delay(1);
+					//turns right
 					for (int i = 0; i < 20000; i++) {
 						rDrive.tankDrive(0.5, -0.5);
 					}
+					//goes right
 					for (int i = 0; i < 40000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
 					Timer.delay(1);
+					//turns left
 					for (int i = 0; i < 16500; i++) {
 						rDrive.tankDrive(-0.5, 0.5);
 					}
+					//goes forward until reaches switch, then stays for 10 sec
 					for (int i = 0; i < 55000; i++) {
 						rDrive.tankDrive(0.5, 0.5);
 					}
@@ -140,7 +163,7 @@ public class Robot extends IterativeRobot {
 			break;
 		case baselineAuto:
 			while (isAutonomous() && isEnabled()) {
-
+				//goes past baseline
 				for (int i = 0; i < 90000; i++) { 
 
 					rDrive.tankDrive(0.5, 0.5);
@@ -154,7 +177,7 @@ public class Robot extends IterativeRobot {
 	case noAuto:
 	default:
 		while (isAutonomous() && isEnabled()) {
-
+			//default
 			break;
 		}
 	}
@@ -173,8 +196,20 @@ public void teleopPeriodic() {
 
 		// Uses input from the joystick
 
-		rDrive.arcadeDrive(joy.getY(), joy.getX()); 
-
+		rDrive.arcadeDrive(-joy.getY(), joy.getX()); 
+		
+		c.setClosedLoopControl(true);
+		solegrab.set(DoubleSolenoid.Value.kOff);
+		
+		if(Joy.getRawButton(buttonexpand));
+		{
+			solegrab.set(DoubleSolenoid.Value.kForward);
+		}
+		
+		if(Joy.getRawButton(butonretract));
+		{
+			solegrab.set(DoubleSolenoid.Value.kreverse);
+		}
 	}
 
 }
